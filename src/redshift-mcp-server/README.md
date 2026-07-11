@@ -132,8 +132,8 @@ Explore everything in my Redshift environment.
 ```
 
 The assistant will:
-1. Call `list_clusters` to find all available clusters and workgroups
-2. Pick the first available cluster and call `list_databases` to discover databases
+1. Call `list_clusters` to find all available clusters and workgroups, and for each available cluster do steps 2-5
+2. Call `list_databases` to discover databases
 3. Call `list_schemas` on each database to map the schema landscape
 4. Call `list_tables` in each schema to discover tables and views
 5. Call `list_columns` on key tables to get detailed column metadata
@@ -147,7 +147,7 @@ What tables are in the 'public' schema of the 'dev' database in my 'analytics-cl
 
 The assistant will:
 1. Call `list_tables` with the cluster, database, and schema
-2. List all tables with their types (TABLE, VIEW, EXTERNAL TABLE) and owners
+2. List all tables with their types (TABLE, VIEW, EXTERNAL TABLE)
 
 **Column Inspection**
 
@@ -304,6 +304,10 @@ ORDER BY saletime DESC, salesid DESC
 LIMIT 10;
 ```
 
+## Key Findings
+• Data Integrity: Perfect synchronization across all metrics
+• Verification: Transaction-level details match exactly (verified 10 recent records)
+
 ## Tools
 
 ### list_clusters
@@ -459,3 +463,12 @@ Your AWS credentials need the following IAM permissions:
 }
 ```
 
+### Database Permissions
+
+In addition to AWS IAM permissions, you need appropriate database-level permissions:
+
+- **Read Access**: `SELECT` permissions on tables/views you want to query
+- **Schema Access**: `USAGE` permissions on schemas you want to explore
+- **Database Access**: Connection permissions to databases you want to access
+
+For the strongest protection, grant these to a **least-privilege, read-only role** rather than a broad or write-capable one.
